@@ -9,7 +9,7 @@ public interface ICRUD<T, V> {
 
     List<T> findAll();
 
-    T fintById(V id);
+    T findById(V id);
 
     void delete(V id);
 }

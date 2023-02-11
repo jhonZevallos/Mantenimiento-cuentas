@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.jboss.logging.Logger;
 
-import com.nttdata.bc.models.Account;
-import com.nttdata.bc.services.IAccountService;
+import com.nttdata.bc.models.DebitCard;
+import com.nttdata.bc.services.IDebitCardService;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -21,21 +21,21 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/accounts")
-public class AccountResource {
+@Path("/debit-cards")
+public class DebitCardResource {
     @Inject
     Logger logger;
 
     @Inject
-    private IAccountService service;
+    private IDebitCardService service;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response insert(@Valid Account obj) {
-        Account client = this.service.insert(obj);
-        return Response.status(Status.CREATED).entity(client).build();
+    public Response insert(@Valid DebitCard obj) {
+        DebitCard debitCard = this.service.insert(obj);
+        return Response.status(Status.CREATED).entity(debitCard).build();
     }
 
     @PUT
@@ -43,26 +43,26 @@ public class AccountResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response update(@PathParam("id") Integer id, @Valid Account obj) {
+    public Response update(@PathParam("id") Integer id, @Valid DebitCard obj) {
         logger.info("Inicio ::: update ::: " + obj);
-        obj.setAccountId(id);
-        Account account = this.service.update(obj);
+        obj.setDebitCardId(id);
+        DebitCard account = this.service.update(obj);
         return Response.status(Status.CREATED).entity(account).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response fintAll() {
-        List<Account> accounts = this.service.findAll();
-        return Response.ok(accounts).build();
+        List<DebitCard> debitCards = this.service.findAll();
+        return Response.ok(debitCards).build();
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("id") Integer id) {
-        Account account = this.service.findById(id);
-        return Response.ok(account).build();
+        DebitCard debitCard = this.service.findById(id);
+        return Response.ok(debitCard).build();
     }
 
     @PUT
