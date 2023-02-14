@@ -3,7 +3,6 @@ package com.nttdata.bc.models;
 import java.time.Instant;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,11 +46,11 @@ public class DebitCard {
     @Column(name = "isActive")
     private Boolean isActive;
 
-    @Column(name = "createdAt", insertable = true)
-    private Instant createdAt = Instant.now();
+    @Column(name = "createdAt")
+    private Instant createdAt;
 
-    @Column(name = "updateddAt", updatable = true)
-    private Instant updateddAt = Instant.now();
+    @Column(name = "updateddAt")
+    private Instant updateddAt;
 
     @OneToMany
     private List<Account> accounts;

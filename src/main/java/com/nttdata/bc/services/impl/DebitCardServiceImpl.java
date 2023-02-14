@@ -1,5 +1,6 @@
 package com.nttdata.bc.services.impl;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
@@ -50,8 +51,12 @@ public class DebitCardServiceImpl implements IDebitCardService {
         obj.setExpirationDate(this.generateExpirationDate());
         obj.setCardValidationCode(this.generateCardValidationCode());
         obj.setIsActive(true);
+        obj.setCreatedAt(Instant.now());
         this.repository.persist(obj);
+
         account.setDebitCard(obj);
+        account.setUpdateddAt(Instant.now());
+
         return obj;
     }
 
@@ -59,6 +64,7 @@ public class DebitCardServiceImpl implements IDebitCardService {
     public DebitCard update(DebitCard obj) {
         DebitCard debitCard = this.findById(obj.getDebitCardId());
         debitCard.setPin(obj.getPin());
+        debitCard.setUpdateddAt(Instant.now());
 
         return debitCard;
     }

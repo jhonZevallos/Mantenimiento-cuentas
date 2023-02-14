@@ -2,6 +2,7 @@ package com.nttdata.bc.resources;
 
 import java.util.List;
 
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.jboss.logging.Logger;
 
 import com.nttdata.bc.models.Account;
@@ -32,6 +33,7 @@ public class AccountResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Retry(maxRetries = 4)
     @Transactional
     public Response insert(@Valid Account obj) {
         Account client = this.service.insert(obj);
@@ -63,6 +65,15 @@ public class AccountResource {
     public Response findById(@PathParam("id") Integer id) {
         Account account = this.service.findById(id);
         return Response.ok(account).build();
+    }
+
+    @GET
+    @Path("/debit-card/{debitCardId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findDebitCardId(@PathParam("debitCardId") Integer debitCardId) {
+        logger.info("entro ::: debitCardId ::: " + debitCardId);
+        List<Account> accounts = this.service.findDebitCardId(debitCardId);
+        return Response.ok(accounts).build();
     }
 
     @PUT

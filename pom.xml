@@ -78,6 +78,11 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-rest-client-jackson</artifactId>
     </dependency>
+    <!-- Para la tolerancia a fallos -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-fault-tolerance</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>io.quarkus</groupId>

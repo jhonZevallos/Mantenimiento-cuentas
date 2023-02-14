@@ -13,7 +13,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,9 +49,9 @@ public class Account {
     @Column(name = "isActive")
     private Boolean isActive;
 
-    @Column(name = "createdAt", insertable = true)
-    private Instant createdAt = Instant.now();
+    @Column(name = "createdAt")
+    private Instant createdAt;
 
-    @Column(name = "updateddAt", updatable = true)
-    private Instant updateddAt = Instant.now();
+    @Column(name = "updateddAt")
+    private Instant updateddAt;
 }
