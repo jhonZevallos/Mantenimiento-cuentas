@@ -71,4 +71,23 @@ public class DebitCardResource {
         this.service.delete(id);
         return Response.noContent().build();
     }
+
+    @GET
+    @Path("/findByCardNumber/{cardNumber}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByCardNumber(@PathParam("cardNumber") String cardNumber) {
+        DebitCard debidCardxCardNumber = this.service.findByCardNumber(cardNumber);
+        return Response.ok(debidCardxCardNumber).build();
+    }
+
+    @GET
+    @Path("/validateclient/{debitCardNumber}/{documentType}/{documentNumber}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response validateDebitCardAndClient(@PathParam("debitCardNumber") String debitCardNumber,
+            @PathParam("documentType") String documentType, @PathParam("documentNumber") String documentNumber) {
+        boolean validationStatus = false;
+        validationStatus = this.service.validateDebitCardAndClientData(debitCardNumber, documentType, documentNumber);
+        return Response.ok(validationStatus).build();
+    }
+
 }

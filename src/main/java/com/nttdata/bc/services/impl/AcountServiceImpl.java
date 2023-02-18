@@ -15,6 +15,7 @@ import com.nttdata.bc.models.Client;
 import com.nttdata.bc.repositories.AccountRepository;
 import com.nttdata.bc.services.IAccountService;
 
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.InternalServerErrorException;
@@ -40,6 +41,9 @@ public class AcountServiceImpl implements IAccountService {
         logger.info("entro");
         Client client = clientRestClient.fintById(obj.getClientId());
         // TODO: Validar si existe cliente
+        if (client == null) {
+            throw new NotFoundException("El cliente con id: " + obj.getClientId() + ", no existe.");
+        }
 
         List<Account> accounts = this.repository.list("clientId", obj.getClientId());
         if (accounts.size() > 0) {
@@ -86,7 +90,7 @@ public class AcountServiceImpl implements IAccountService {
 
     @Override
     public List<Account> findAll() {
-        return this.repository.listAll();
+        return this.repository.listAll(Sort.by("accountId"));
     }
 
     @Override
@@ -108,6 +112,8 @@ public class AcountServiceImpl implements IAccountService {
 
     @Override
     public List<Account> findDebitCardId(Integer debitCardId) {
+
         return this.repository.list("debitCard.debitCardId", debitCardId);
     }
+
 }

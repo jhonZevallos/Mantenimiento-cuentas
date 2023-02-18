@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
+import com.nttdata.bc.clients.IClientRestClient;
 import com.nttdata.bc.exceptions.BadRequestException;
 import com.nttdata.bc.exceptions.NotFoundException;
 import com.nttdata.bc.models.Account;
+import com.nttdata.bc.models.Client;
 import com.nttdata.bc.models.DebitCard;
 import com.nttdata.bc.repositories.AccountRepository;
 import com.nttdata.bc.repositories.DebitCardRepository;
@@ -29,6 +32,10 @@ public class DebitCardServiceImpl implements IDebitCardService {
 
     @Inject
     AccountRepository accountRepository;
+
+    @Inject
+    @RestClient
+    IClientRestClient clientRestClient;
 
     @Override
     public DebitCard insert(DebitCard obj) {
@@ -113,6 +120,29 @@ public class DebitCardServiceImpl implements IDebitCardService {
         String expirationDate = month + "/" + String.valueOf(year).substring(2, 4);
 
         return expirationDate;
+    }
+
+    @Override
+    public DebitCard findByCardNumber(String cardNumber) {
+        DebitCard debitCard = this.repository.find("cardNumber", cardNumber).firstResult();
+        if (debitCard == null) {
+            throw new NotFoundException("La tarjeta de débito no existe.");
+        }
+        return debitCard;
+    }
+
+    @Override
+    public boolean validateDebitCardAndClientData(String debitCardNumber, String documentType, String documentNumber) {
+        DebitCard debitCard = this.findByCardNumber(debitCardNumber);
+        Client client = this.clientRestClient.findByTypeAndNumDoc(documentType, documentNumber);
+        Account account = this.accountRepository.findById(debitCard.getAccountId());
+
+        if (debitCard.getAccountId() == account.getAccountId()) {
+            if (account.getClientId() == client.getClientId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

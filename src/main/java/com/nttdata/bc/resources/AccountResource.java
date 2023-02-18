@@ -78,6 +78,9 @@ public class AccountResource {
 
     @PUT
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
     public Response delete(@PathParam("id") Integer id) {
         this.service.delete(id);
         return Response.noContent().build();
