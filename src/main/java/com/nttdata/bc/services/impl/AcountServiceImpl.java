@@ -3,7 +3,7 @@ package com.nttdata.bc.services.impl;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+// import java.util.stream.Collectors; [RRM]
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
@@ -11,7 +11,7 @@ import org.jboss.logging.Logger;
 import com.nttdata.bc.clients.IClientRestClient;
 import com.nttdata.bc.exceptions.NotFoundException;
 import com.nttdata.bc.models.Account;
-import com.nttdata.bc.models.Client;
+// import com.nttdata.bc.models.Client; [RRM]
 import com.nttdata.bc.repositories.AccountRepository;
 import com.nttdata.bc.services.IAccountService;
 
@@ -39,11 +39,8 @@ public class AcountServiceImpl implements IAccountService {
     @Override
     public Account insert(Account obj) {
         logger.info("entro");
-        Client client = clientRestClient.fintById(obj.getClientId());
+        // Client client = clientRestClient.fintById(obj.getClientId()); [RRM]
         // TODO: Validar si existe cliente
-        if (client == null) {
-            throw new NotFoundException("El cliente con id: " + obj.getClientId() + ", no existe.");
-        }
 
         List<Account> accounts = this.repository.list("clientId", obj.getClientId());
         if (accounts.size() > 0) {
@@ -90,7 +87,8 @@ public class AcountServiceImpl implements IAccountService {
 
     @Override
     public List<Account> findAll() {
-        return this.repository.listAll(Sort.by("accountId"));
+        // return this.repository.listAll();
+        return this.repository.listAll(Sort.by("accountId")); // [RRM] - ADICIÓN - ordena por ID
     }
 
     @Override
@@ -98,22 +96,23 @@ public class AcountServiceImpl implements IAccountService {
         logger.info("INI ::: findById ::: " + id);
         Account account = this.repository.findById(id);
         if (account == null) {
+            logger.info("[RRM] - accountId doesn't exists");
             throw new NotFoundException("La cuenta con id: " + id.toString() + ", no existe.");
         }
-
+        logger.info("[RRM] - ok");
         return account;
     }
 
     @Override
     public void delete(Integer id) {
         Account account = this.findById(id);
+        logger.info("[RRM] getClientId: " + account.getClientId());
         account.setIsActive(false);
+        logger.info("[RRM] getClientId: " + account.getIsActive());
     }
 
     @Override
     public List<Account> findDebitCardId(Integer debitCardId) {
-
         return this.repository.list("debitCard.debitCardId", debitCardId);
     }
-
 }

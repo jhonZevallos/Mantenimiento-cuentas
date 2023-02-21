@@ -24,6 +24,7 @@ import jakarta.ws.rs.core.Response.Status;
 
 @Path("/accounts")
 public class AccountResource {
+    
     @Inject
     Logger logger;
 
@@ -78,9 +79,9 @@ public class AccountResource {
 
     @PUT
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Transactional
+    @Produces(MediaType.APPLICATION_JSON) // [RRM] - ADICIÓN
+    @Consumes(MediaType.APPLICATION_JSON) // [RRM] - ADICIÓN
+    @Transactional // [RRM] - ADICIÓN
     public Response delete(@PathParam("id") Integer id) {
         this.service.delete(id);
         return Response.noContent().build();

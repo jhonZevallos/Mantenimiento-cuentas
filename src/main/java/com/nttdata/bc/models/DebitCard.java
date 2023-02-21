@@ -54,5 +54,4 @@ public class DebitCard {
 
     @OneToMany
     private List<Account> accounts;
-
 }

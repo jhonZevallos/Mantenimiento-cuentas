@@ -16,9 +16,4 @@ public interface IClientRestClient {
     @Path("/{id}")
     Client fintById(@PathParam("id") Integer id);
 
-    @GET
-    @Path("/findByTypeAndNumDoc/{documentIdentityType}/{documentIdentity}")
-    Client findByTypeAndNumDoc(@PathParam("documentIdentityType") String documentIdentityType,
-            @PathParam("documentIdentity") String documentIdentity);
-
 }
